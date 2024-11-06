@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Отзывы о фильмах</h1>
+<br>
+    <div class="row">
+
+        {% for review in reviews %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ review.image_url }}" class="card-img-top" alt="{{ review.movie_title }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ review.movie_title }}</h5>
+                        <p class="card-text">
+                            <strong>Рейтинг:</strong> 
+                            {% for i in range(5) %}
+                                {% if i < review.rating %}
+                                    <span>&#9733;</span>
+                                {% else %}
+                                    <span>&#9734;</span>
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                        <p class="card-text">{{ review.review_text[:100] }}...</p>
+                        <p class="card-text text-muted">Автор: {{ review.user.login }} | Дата: {{ format_datetime(review.date, format='d MMMM yyyy')}}</p>
+                        <a href="{{ url_for('review_detail', review_id=review.id) }}" class="btn btn-primary">Читать полностью</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
